@@ -13,8 +13,8 @@ const Routes = () => {
     return (
         <NavigationContainer>
             <AppStack.Navigator headerMode="none">
-                <AppStack.Screen name="Week" component={Week} />
                 <AppStack.Screen name="Home" component={Home} />
+                <AppStack.Screen name="Week" component={Week} />
                 <AppStack.Screen name="Detail" component={Detail} />
             </AppStack.Navigator>
         </NavigationContainer>
