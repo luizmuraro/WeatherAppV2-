@@ -13,13 +13,11 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: 72.8,
+        height: 100,
     },
     icon: {
-        height: 18.2,
-        width: 101.4,
-        marginTop: 21,
-        marginBottom: 21,
+        height: 14,
+        width: 78,
     },
 
 })
