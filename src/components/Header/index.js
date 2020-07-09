@@ -16,8 +16,8 @@ const styles = StyleSheet.create({
         height: 100,
     },
     icon: {
-        height: 14,
-        width: 78,
+        height: 18.2,
+        width: 93.6,
     },
 
 })
