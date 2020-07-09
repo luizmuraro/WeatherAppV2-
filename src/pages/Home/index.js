@@ -5,11 +5,12 @@ import Header from '../../components/Header';
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
+import { useNavigation } from '@react-navigation/native';
 
 
 const Home = () => {
 
-    const [currentCondition, setCurrentCondition] = useState("");
+    const [currentCondition, setCurrentCondition] = useState('Clear');
     const [currentTemp, setCurrentTemp] = useState(0);
     const [currentHumidity, setCurrentHumidity] = useState(0);
     const [currentWind, setCurrentWind] = useState(0);
@@ -17,19 +18,23 @@ const Home = () => {
     const [todayForecast, setTodayForecast] = useState(0);
     const [tomorrowForecast, setTomorrowForecast] = useState(0);
 
+    const navigation = useNavigation();
+
     useEffect(() => {
         async function getPositionAndForecast() {
             await Geolocation.getCurrentPosition (info => {
                 const {latitude, longitude} = info.coords;
 
                 axios.get(`http://api.weatherapi.com/v1/forecast.json?key=bcb8eece729c406b820220103200707&q=${latitude},${longitude}&days=7`).then(response => {
-                    setCurrentTemp(response.data.current.temp_c);
-                    setCurrentCondition(response.data.current.condition.text);
-                    setCurrentHumidity(response.data.current.humidity);
-                    setCurrentWind(response.data.current.wind_kph);
-                    setCurrentPrecipitation(response.data.current.precip_mm);
-                    setTodayForecast(response.data.forecast.forecastday[0].day);
-                    setTomorrowForecast(response.data.forecast.forecastday[0].day);
+                    const { temp_c, condition, humidity, wind_kph, precip_mm } = response.data.current;
+                    const { forecast } = response.data
+                    setCurrentTemp(temp_c);
+                    setCurrentCondition(condition.text);
+                    setCurrentHumidity(humidity);
+                    setCurrentWind(wind_kph);
+                    setCurrentPrecipitation(precip_mm);
+                    setTodayForecast(forecast.forecastday[0].day);
+                    setTomorrowForecast(forecast.forecastday[1].day);
                 })
             })
 
@@ -38,12 +43,36 @@ const Home = () => {
         
     }, []);
 
+    function handleNavigateToWeek() {
+        navigation.navigate('Week');
+    }
+
+    const backgroundVariations = {
+        'Clear': ['rgb(102,197,255)', 'rgb(21,128,253)'],
+        'Suny': ['rgb(102,197,255)', 'rgb(21,128,253)'],
+        'Partly cloudy': ['rgb(102,197,255)', 'rgb(21,128,253)'],
+        'Mostly cloudy': ['rgb(102,197,255)', 'rgb(21,128,253)'],
+        'Cloudy': ['rgb(104,180,239)', 'rgb(50,90,194)'],
+        'Showers': ['rgb(104,180,239)', 'rgb(50,90,194)'],
+        'Rain': ['rgb(104,180,239)', 'rgb(50,90,194)'],
+        'Thunderstorm': ['rgb(96,134,220)','rgb(39,51,105)']
+    };
+    const imageVariation = {
+        'Sunny': require('../../assets/images/sunny/imageSunny.png'),
+        'Partly cloudy': require('../../assets/images/partlycloudy/imagePartlycloudy.png'),
+        'Mostly cloudy': require('../../assets/images/mostlycloudy/imageMostlycloudy.png'),
+        'Cloudy': require('../../assets/images/cloudy/imageCloudy.png'),
+        'Showers': require('../../assets/images/showers/imageShowers.png'),
+        'Rain': require('../../assets/images/rain/imageRain.png'),
+        'Thunderstorm': require('../../assets/images/thunder/imageThunderstorm.png')
+    };
+
     return (
 
-        <LinearGradient colors={['rgb(102,197,255)', 'rgb(21,128,253)']} style={styles.container}>
+            <LinearGradient colors={backgroundVariations[currentCondition]} style={styles.container}>
             <Header />
             <View style={styles.main}>
-                <Image style={styles.mainImage} source={require('../../assets/images/sunny/imageSunny.png')} />
+                <Image style={styles.mainImage} source={imageVariation[currentCondition]} />
                 <Text style={styles.littleText}>{currentCondition}</Text>
                 <View style={styles.temp}>
                         <Text style={styles.temperature}>{currentTemp}</Text>
@@ -72,7 +101,7 @@ const Home = () => {
                 </View>
                 <View style={styles.divider} />
                 <View style={styles.footer}>
-                    <Image style={styles.tomorrowImage} source={require('../../assets/images/sunny/imageSunny.png')} />
+                    <Image style={styles.tomorrowImage} source={imageVariation[currentCondition]} />
                     <View style={styles.tomorrowText}>
                         <Text style={styles.littleText}> Tomorrow</Text>
                         <View style={styles.tomorrowMinMax}>
@@ -83,7 +112,7 @@ const Home = () => {
                             <Text style={styles.littleText}>{tomorrowForecast.mintemp_c}º</Text>
                         </View>
                     </View>
-                    <TouchableOpacity style={styles.button} >
+                    <TouchableOpacity style={styles.button} onPress={handleNavigateToWeek}>
                             <Text style={styles.buttonText}>See the full week</Text>
                             <Image style={styles.buttonIcon} source={require('../../assets/icons/arrowRight/icArrowright24Px.png')} />
                     </TouchableOpacity>
