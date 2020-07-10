@@ -7,7 +7,6 @@ import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { useNavigation } from '@react-navigation/native';
 
-
 const Home = () => {
 
     const [currentCondition, setCurrentCondition] = useState('Clear');
@@ -17,6 +16,7 @@ const Home = () => {
     const [currentPrecipitation, setCurrentPrecipitation] = useState(0);
     const [todayForecast, setTodayForecast] = useState(0);
     const [tomorrowForecast, setTomorrowForecast] = useState(0);
+    const [tomorrowCondition, setTomorrowCondition] = useState('Clear');
 
     const navigation = useNavigation();
 
@@ -35,12 +35,12 @@ const Home = () => {
                     setCurrentPrecipitation(precip_mm);
                     setTodayForecast(forecast.forecastday[0].day);
                     setTomorrowForecast(forecast.forecastday[1].day);
+                    setTomorrowCondition(forecast.forecastday[1].day.condition.text)
                 })
             })
 
         }
-        getPositionAndForecast()
-        
+        getPositionAndForecast()    
     }, []);
 
     function handleNavigateToWeek() {
@@ -49,22 +49,31 @@ const Home = () => {
 
     const backgroundVariations = {
         'Clear': ['rgb(102,197,255)', 'rgb(21,128,253)'],
-        'Suny': ['rgb(102,197,255)', 'rgb(21,128,253)'],
+        'Sunny': ['rgb(102,197,255)', 'rgb(21,128,253)'],
         'Partly cloudy': ['rgb(102,197,255)', 'rgb(21,128,253)'],
         'Mostly cloudy': ['rgb(102,197,255)', 'rgb(21,128,253)'],
         'Cloudy': ['rgb(104,180,239)', 'rgb(50,90,194)'],
+        'Mist': ['rgb(104,180,239)', 'rgb(50,90,194)'],
+        'Overcast': ['rgb(104,180,239)', 'rgb(50,90,194)'],
         'Showers': ['rgb(104,180,239)', 'rgb(50,90,194)'],
+        'Patchy rain possible': ['rgb(104,180,239)', 'rgb(50,90,194)'],
         'Rain': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Thunderstorm': ['rgb(96,134,220)','rgb(39,51,105)']
+        'Thunderstorm': ['rgb(96,134,220)','rgb(39,51,105)'],
+        'Thundery outbreaks possible': ['rgb(96,134,220)','rgb(39,51,105)'],
     };
     const imageVariation = {
         'Sunny': require('../../assets/images/sunny/imageSunny.png'),
+        'Clear': require('../../assets/images/sunny/imageSunny.png'),
         'Partly cloudy': require('../../assets/images/partlycloudy/imagePartlycloudy.png'),
         'Mostly cloudy': require('../../assets/images/mostlycloudy/imageMostlycloudy.png'),
         'Cloudy': require('../../assets/images/cloudy/imageCloudy.png'),
+        'Mist': require('../../assets/images/cloudy/imageCloudy.png'),
+        'Overcast': require('../../assets/images/cloudy/imageCloudy.png'),
         'Showers': require('../../assets/images/showers/imageShowers.png'),
+        'Patchy rain possible': require('../../assets/images/showers/imageShowers.png'),
         'Rain': require('../../assets/images/rain/imageRain.png'),
-        'Thunderstorm': require('../../assets/images/thunder/imageThunderstorm.png')
+        'Thunderstorm': require('../../assets/images/thunder/imageThunderstorm.png'),
+        'Thundery outbreaks possible': require('../../assets/images/thunder/imageThunderstorm.png'),
     };
 
     return (
@@ -101,7 +110,7 @@ const Home = () => {
                 </View>
                 <View style={styles.divider} />
                 <View style={styles.footer}>
-                    <Image style={styles.tomorrowImage} source={imageVariation[currentCondition]} />
+                    <Image style={styles.tomorrowImage} source={imageVariation[tomorrowCondition]} />
                     <View style={styles.tomorrowText}>
                         <Text style={styles.littleText}> Tomorrow</Text>
                         <View style={styles.tomorrowMinMax}>
