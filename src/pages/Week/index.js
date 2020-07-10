@@ -1,13 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native'
 import LinearGradient from 'react-native-linear-gradient';
 
 
 const Week = () => {
 
     const navigation = useNavigation();
+    const routes = useRoute();
+    const [forecast, setForecast] = useState([]);
+    const [weekDays, setWeekDays] = useState([]);
+
+    useEffect( () => {
+        const { forecastday } = routes.params.forecast;
+        setForecast(forecastday);
+        
+        function getWeekDay() {
+            const days = [];
+            forecastday.map( day => {
+                var date = new Date(day.date);
+                days.push(date.getDay(day.date));
+            })
+            setWeekDays(days);
+        }
+        getWeekDay();
+    }, []);
+
 
     function handleNavigateBack() {
         navigation.goBack();
@@ -15,6 +34,33 @@ const Week = () => {
     function handleNavigateTodetail() {
         navigation.navigate('Detail');
     }
+
+    const dayVariation = {
+        0: 'Mon',
+        1: 'Tue',
+        2: 'Wed',
+        3: 'Thu',
+        4: 'Fri',
+        5: 'Sat',
+        6: 'Sun'
+    }
+
+    const imageVariation = {
+        'Sunny': require('../../assets/images/sunny/imageSunny.png'),
+        'Clear': require('../../assets/images/sunny/imageSunny.png'),
+        'Partly cloudy': require('../../assets/images/partlycloudy/imagePartlycloudy.png'),
+        'Mostly cloudy': require('../../assets/images/mostlycloudy/imageMostlycloudy.png'),
+        'Cloudy': require('../../assets/images/cloudy/imageCloudy.png'),
+        'Mist': require('../../assets/images/cloudy/imageCloudy.png'),
+        'Overcast': require('../../assets/images/cloudy/imageCloudy.png'),
+        'Showers': require('../../assets/images/showers/imageShowers.png'),
+        'Patchy rain possible': require('../../assets/images/showers/imageShowers.png'),
+        'Rain': require('../../assets/images/rain/imageRain.png'),
+        'Thunderstorm': require('../../assets/images/thunder/imageThunderstorm.png'),
+        'Thundery outbreaks possible': require('../../assets/images/thunder/imageThunderstorm.png'),
+        'Moderate rain at times': require('../../assets/images/showers/imageShowers.png'),
+
+    };
 
     return (
         <LinearGradient colors={['rgb(102,197,255)', 'rgb(21,128,253)']} style={styles.container}>
@@ -26,113 +72,25 @@ const Week = () => {
                 <View style={styles.headerButton} />
             </View>
 
-            <TouchableOpacity style={styles.item} onPress={() => handleNavigateTodetail()}>
-                <View style={styles.itemContainer}>
-                    <Text style={[styles.littleText, styles.dayText]}>sun</Text>
-                    <Image style={styles.itemImage} source={require('../../assets/images/bottomsunny/imageSunny.png')} />
-                    <Text style={styles.littleText}>Sunny</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
-
-
-            <TouchableOpacity style={styles.item} onPress={() => handleNavigateTodetail()}>
-                <View style={styles.itemContainer}>
-                <Text style={[styles.littleText, styles.dayText]}>mon</Text>
-                    <Image style={styles.itemImage} source={require('../../assets/images/partlycloudy/imagePartlycloudy.png')} />
-                    <Text style={styles.littleText}>Partly cloudy</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
-
-
-            <TouchableOpacity style={styles.item} onPress={() => handleNavigateTodetail()}>
-                <View style={styles.itemContainer}>
-                <Text style={[styles.littleText, styles.dayText]}>tue</Text>
-                    <Image style={styles.itemImage} source={require('../../assets/images/showers/imageShowers.png')} />
-                    <Text style={styles.littleText}>Showers</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
-
-
-            <TouchableOpacity style={styles.item} onPress={() => handleNavigateTodetail()}>
-                <View style={styles.itemContainer}>
-                <Text style={[styles.littleText, styles.dayText]}>wed</Text>
-                    <Image style={styles.itemImage} source={require('../../assets/images/thunder/imageThunderstorm.png')} />
-                    <Text style={styles.littleText}>Thunderstorm</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
-
-
-            <TouchableOpacity style={styles.item} onPress={() => handleNavigateTodetail()}>
-                <View style={styles.itemContainer}>
-                <Text style={[styles.littleText, styles.dayText]}>thu</Text>
-                    <Image style={styles.itemImage} source={require('../../assets/images/rain/imageRain.png')} />
-                    <Text style={styles.littleText}>Rain</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
-
-
-            <TouchableOpacity style={styles.item} onPress={() => handleNavigateTodetail()}>
-                <View style={styles.itemContainer}>
-                <Text style={[styles.littleText, styles.dayText]}>fri</Text>
-                    <Image style={styles.itemImage} source={require('../../assets/images/cloudy/imageCloudy.png')} />
-                    <Text style={styles.littleText}>Cloudy</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
-
-
-            <TouchableOpacity style={styles.item} onPress={() => handleNavigateTodetail()}>
-                <View style={styles.itemContainer}>
-                <Text style={[styles.littleText, styles.dayText]}>sat</Text>
-                    <Image style={styles.itemImage} source={require('../../assets/images/mostlycloudy/imageMostlycloudy.png')} />
-                    <Text style={styles.littleText}>Mostly cloudy</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
-
-
-
-
+            {forecast.map((day, index) => (
+                <TouchableOpacity
+                    key={day.date}
+                    style={styles.item}
+                    onPress={() => handleNavigateTodetail()}
+                >
+                    <View style={styles.itemContainer}>
+                        <Text style={[styles.littleText, styles.dayText]}>{dayVariation[weekDays[index]]}</Text>
+                        <Image style={styles.itemImage} source={imageVariation[day.day.condition.text]} />
+                        <Text style={styles.littleText}>{day.day.condition.text}</Text>
+                    </View>
+                    <View style={styles.minMax}>
+                        <Image source={require('../../assets/icons/max/icMax12Px.png')} />
+                        <Text style={styles.minMaxText}>{day.day.maxtemp_c}º</Text>
+                        <Image source={require('../../assets/icons/min/icMin12Px.png')} />
+                        <Text style={styles.minMaxText}>{day.day.mintemp_c}º</Text>
+                    </View>
+                </TouchableOpacity>
+            ))}
         </LinearGradient>
     );
 }
@@ -185,7 +143,7 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontFamily: 'Averta-Semibold',
         color: 'rgb(255,255,255)',
-        textTransform: 'capitalize',
+        width: 100,
     },
     minMaxText: {
         fontSize: 12,

@@ -17,6 +17,8 @@ const Home = () => {
     const [todayForecast, setTodayForecast] = useState(0);
     const [tomorrowForecast, setTomorrowForecast] = useState(0);
     const [tomorrowCondition, setTomorrowCondition] = useState('Clear');
+    const [weekForecast, setWeekForecast] = useState('');
+
 
     const navigation = useNavigation();
 
@@ -36,6 +38,7 @@ const Home = () => {
                     setTodayForecast(forecast.forecastday[0].day);
                     setTomorrowForecast(forecast.forecastday[1].day);
                     setTomorrowCondition(forecast.forecastday[1].day.condition.text)
+                    setWeekForecast(forecast);
                 })
             })
 
@@ -44,7 +47,7 @@ const Home = () => {
     }, []);
 
     function handleNavigateToWeek() {
-        navigation.navigate('Week');
+        navigation.navigate('Week',  { forecast: weekForecast} );
     }
 
     const backgroundVariations = {
