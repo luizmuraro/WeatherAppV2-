@@ -59,10 +59,14 @@ const Home = () => {
         'Mist': ['rgb(104,180,239)', 'rgb(50,90,194)'],
         'Overcast': ['rgb(104,180,239)', 'rgb(50,90,194)'],
         'Showers': ['rgb(104,180,239)', 'rgb(50,90,194)'],
+        'Moderate or heavy rain shower': ['rgb(104,180,239)', 'rgb(50,90,194)'],
+        'Light rain': ['rgb(104,180,239)', 'rgb(50,90,194)'],
         'Patchy rain possible': ['rgb(104,180,239)', 'rgb(50,90,194)'],
         'Rain': ['rgb(104,180,239)', 'rgb(50,90,194)'],
         'Thunderstorm': ['rgb(96,134,220)','rgb(39,51,105)'],
         'Thundery outbreaks possible': ['rgb(96,134,220)','rgb(39,51,105)'],
+        'Moderate or heavy rain with thunder': ['rgb(96,134,220)','rgb(39,51,105)'],
+        
     };
     const imageVariation = {
         'Sunny': require('../../assets/images/sunny/imageSunny.png'),
@@ -73,10 +77,13 @@ const Home = () => {
         'Mist': require('../../assets/images/cloudy/imageCloudy.png'),
         'Overcast': require('../../assets/images/cloudy/imageCloudy.png'),
         'Showers': require('../../assets/images/showers/imageShowers.png'),
+        'Moderate or heavy rain shower': require('../../assets/images/showers/imageShowers.png'),
+        'Light rain': require('../../assets/images/showers/imageShowers.png'),
         'Patchy rain possible': require('../../assets/images/showers/imageShowers.png'),
         'Rain': require('../../assets/images/rain/imageRain.png'),
         'Thunderstorm': require('../../assets/images/thunder/imageThunderstorm.png'),
         'Thundery outbreaks possible': require('../../assets/images/thunder/imageThunderstorm.png'),
+        'Moderate or heavy rain with thunder': require('../../assets/images/thunder/imageThunderstorm.png'),
     };
 
     return (
@@ -87,7 +94,7 @@ const Home = () => {
                 <Image style={styles.mainImage} source={imageVariation[currentCondition]} />
                 <Text style={styles.littleText}>{currentCondition}</Text>
                 <View style={styles.temp}>
-                        <Text style={styles.temperature}>{currentTemp}</Text>
+                        <Text style={styles.tempText}>{currentTemp}</Text>
                     <Text style={styles.tempCelcius}>°C</Text>
 
                 </View>
@@ -220,12 +227,11 @@ const styles = StyleSheet.create({
         marginLeft: 13
 
     },
-    temperature: {
+    tempText: {
         fontSize: 64,
         fontFamily: 'Averta-Semibold',
         color: 'rgb(255,255,255)',
         alignSelf: 'center',
-        // backgroundColor: 'red',
     },
 
     tempCelcius: {

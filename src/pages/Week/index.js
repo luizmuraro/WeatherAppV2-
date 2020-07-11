@@ -31,18 +31,18 @@ const Week = () => {
     function handleNavigateBack() {
         navigation.goBack();
     }
-    function handleNavigateTodetail() {
-        navigation.navigate('Detail');
+    function handleNavigateTodetail(dayForecast, weekDay) {
+        navigation.navigate('Detail', {dayForecast, weekDay});
     }
 
     const dayVariation = {
-        0: 'Mon',
-        1: 'Tue',
-        2: 'Wed',
-        3: 'Thu',
-        4: 'Fri',
-        5: 'Sat',
-        6: 'Sun'
+        0: 'Monday',
+        1: 'Tuesday',
+        2: 'Wednesday',
+        3: 'Thursday',
+        4: 'Friday',
+        5: 'Saturday',
+        6: 'Sunday'
     }
 
     const imageVariation = {
@@ -54,12 +54,12 @@ const Week = () => {
         'Mist': require('../../assets/images/cloudy/imageCloudy.png'),
         'Overcast': require('../../assets/images/cloudy/imageCloudy.png'),
         'Showers': require('../../assets/images/showers/imageShowers.png'),
+        'Moderate or heavy rain shower': require('../../assets/images/showers/imageShowers.png'),
+        'Light rain': require('../../assets/images/showers/imageShowers.png'),
         'Patchy rain possible': require('../../assets/images/showers/imageShowers.png'),
         'Rain': require('../../assets/images/rain/imageRain.png'),
         'Thunderstorm': require('../../assets/images/thunder/imageThunderstorm.png'),
         'Thundery outbreaks possible': require('../../assets/images/thunder/imageThunderstorm.png'),
-        'Moderate rain at times': require('../../assets/images/showers/imageShowers.png'),
-
     };
 
     return (
@@ -76,7 +76,7 @@ const Week = () => {
                 <TouchableOpacity
                     key={day.date}
                     style={styles.item}
-                    onPress={() => handleNavigateTodetail()}
+                    onPress={() => handleNavigateTodetail(day, dayVariation[weekDays[index]])}
                 >
                     <View style={styles.itemContainer}>
                         <Text style={[styles.littleText, styles.dayText]}>{dayVariation[weekDays[index]]}</Text>
