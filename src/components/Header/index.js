@@ -1,5 +1,7 @@
 import React from 'react';
-import { View, StyleSheet, Image } from 'react-native';
+import { View, Image } from 'react-native';
+
+import styles from './styles';
 
 const Header = () => {
     return (
@@ -7,20 +9,7 @@ const Header = () => {
             <Image source={require('../../assets/logo.png')} style={styles.icon} />
         </View>
     );
-}
-
-const styles = StyleSheet.create({
-    container: {
-        alignItems: 'center',
-        justifyContent: 'center',
-        height: 140,
-    },
-    icon: {
-        height: 18.2,
-        width: 93.6,
-    },
-
-})
+};
 
 export default Header;
 

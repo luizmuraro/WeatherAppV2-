@@ -55,12 +55,12 @@ export default StyleSheet.create({
         fontSize: 14,
         fontFamily: 'Averta-Semibold',
         color: 'rgb(255,255,255)',
-        
+
     },
     mainImage: {
         width: 160,
         height: 160,
-        marginTop: 51.2,
+        marginTop: 25,
         marginBottom: 12.8
     },
     tomorrowImage: {
@@ -76,7 +76,6 @@ export default StyleSheet.create({
         fontFamily: 'Averta-Semibold',
         color: 'rgb(255,255,255)',
         marginRight: 9.6,
-        textTransform: 'capitalize'
     },
     temp: {
         flexDirection: 'row',
