@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
 
+import styles from './styles';
 
 const Detail = () => {
 
@@ -35,24 +36,6 @@ const Detail = () => {
         navigation.goBack();
     }
 
-    const backgroundVariations = {
-        'Clear': ['rgb(102,197,255)', 'rgb(21,128,253)'],
-        'Sunny': ['rgb(102,197,255)', 'rgb(21,128,253)'],
-        'Partly cloudy': ['rgb(102,197,255)', 'rgb(21,128,253)'],
-        'Mostly cloudy': ['rgb(102,197,255)', 'rgb(21,128,253)'],
-        'Cloudy': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Mist': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Overcast': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Showers': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Moderate or heavy rain shower': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Light rain': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Patchy rain possible': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Rain': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Thunderstorm': ['rgb(96,134,220)','rgb(39,51,105)'],
-        'Thundery outbreaks possible': ['rgb(96,134,220)','rgb(39,51,105)'],
-        'Moderate or heavy rain with thunder': ['rgb(96,134,220)','rgb(39,51,105)'],
-        
-    };
     const imageVariation = {
         'Sunny': require('../../assets/images/sunny/imageSunny.png'),
         'Clear': require('../../assets/images/sunny/imageSunny.png'),
@@ -84,15 +67,15 @@ const Detail = () => {
                 <Image style={styles.mainImage} source={imageVariation[condition]} />
                 <Text style={styles.littleText}>{condition}</Text>
                 <View style={styles.temp}>
-                        <Text style={styles.tempText}>{temp}</Text>
+                        <Text style={styles.tempText}>{Math.round(temp)}</Text>
                     <Text style={styles.tempCelcius}>°C</Text>
 
                 </View>
                 <View style={styles.minMax}>
                     <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.littleText}>{maxTemp}º</Text>
+                    <Text style={styles.littleText}>{Math.round(maxTemp)}º</Text>
                     <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.littleText}>{minTemp}º</Text>
+                    <Text style={styles.littleText}>{Math.round(minTemp)}º</Text>
                 </View>
                 <View style={styles.weatherConditions}>
                     <View style={styles.weatherItems}>
@@ -112,85 +95,5 @@ const Detail = () => {
         </LinearGradient>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    header: {
-        flexDirection: 'row',
-        height: 140,
-        paddingHorizontal: 24,
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-    headerButton: {
-        width: 18,
-    },
-    title: {
-        fontFamily: 'Averta-Semibold',
-        fontSize: 20,
-        color: 'rgb(255,255,255)',
-    },
-    main: {
-        alignItems: 'center',
-        alignSelf: "stretch"
-    },
-    mainImage: {
-        width: 160,
-        height: 160,
-        marginTop: 51.2,
-        marginBottom: 12.8
-    },
-    
-    minMax: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    weatherConditions: {
-        flexDirection: 'row',
-        marginTop: 70.4,
-        alignSelf: 'stretch',
-        justifyContent: "space-between",
-        paddingHorizontal: 52
-    },
-    weatherText: {
-        fontSize: 16,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)'
-    },
-    weatherItems: {
-        alignItems: 'center',
-    },
-    littleText: {
-        fontSize: 14,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)',
-        marginRight: 9.6,
-        textTransform: 'capitalize'
-    },
-    temp: {
-        flexDirection: 'row',
-        marginTop: 19.2,
-        marginBottom: 19.2,
-        alignItems: "center",
-        marginLeft: 13
-
-    },
-    tempText: {
-        fontSize: 64,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)',
-        alignSelf: 'center',
-    },
-
-    tempCelcius: {
-        fontSize: 24,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)',
-        marginBottom: 27
-
-    },
-})
 
 export default Detail;

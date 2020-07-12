@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, Image } from 'react-native';
+import { View, StyleSheet, Image } from 'react-native';
 
 const Header = () => {
     return (
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     container: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: 100,
+        height: 140,
     },
     icon: {
         height: 18.2,
@@ -23,3 +23,4 @@ const styles = StyleSheet.create({
 })
 
 export default Header;
+

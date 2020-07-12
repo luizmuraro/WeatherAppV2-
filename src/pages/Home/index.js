@@ -1,11 +1,12 @@
 import React , {useEffect, useState} from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Header from '../../components/Header';
 
 import LinearGradient from 'react-native-linear-gradient';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
 import { useNavigation } from '@react-navigation/native';
+import styles from './styles';
 
 const Home = () => {
 
@@ -94,15 +95,15 @@ const Home = () => {
                 <Image style={styles.mainImage} source={imageVariation[currentCondition]} />
                 <Text style={styles.littleText}>{currentCondition}</Text>
                 <View style={styles.temp}>
-                        <Text style={styles.tempText}>{currentTemp}</Text>
+                        <Text style={styles.tempText}>{Math.round(currentTemp)}</Text>
                     <Text style={styles.tempCelcius}>°C</Text>
 
                 </View>
                 <View style={styles.minMax}>
                     <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.littleText}>{todayForecast.maxtemp_c}º</Text>
+                    <Text style={styles.littleText}>{Math.round(todayForecast.maxtemp_c)}º</Text>
                     <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.littleText}>{todayForecast.mintemp_c}º</Text>
+                    <Text style={styles.littleText}>{Math.round(todayForecast.mintemp_c)}º</Text>
                 </View>
                 <View style={styles.weatherConditions}>
                     <View style={styles.weatherItems}>
@@ -125,10 +126,10 @@ const Home = () => {
                         <Text style={styles.littleText}> Tomorrow</Text>
                         <View style={styles.tomorrowMinMax}>
                             <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                            <Text style={styles.littleText}>{tomorrowForecast.maxtemp_c}º</Text>
+                            <Text style={styles.littleText}>{Math.round(tomorrowForecast.maxtemp_c)}º</Text>
 
                             <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                            <Text style={styles.littleText}>{tomorrowForecast.mintemp_c}º</Text>
+                            <Text style={styles.littleText}>{Math.round(tomorrowForecast.mintemp_c)}º</Text>
                         </View>
                     </View>
                     <TouchableOpacity style={styles.button} onPress={handleNavigateToWeek}>
@@ -140,114 +141,5 @@ const Home = () => {
         </LinearGradient>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: 'center',
-    },
-    main: {
-        alignItems: 'center',
-        alignSelf: "stretch"
-    },
-    minMax: {
-        flexDirection: 'row',
-        alignItems: 'center'
-    },
-    weatherConditions: {
-        flexDirection: 'row',
-        marginTop: 70.4,
-        alignSelf: 'stretch',
-        justifyContent: "space-between",
-        paddingHorizontal: 52
-    },
-    weatherText: {
-        fontSize: 16,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)'
-    },
-    weatherItems: {
-        alignItems: 'center',
-    },
-    footer: {
-
-        flexDirection: 'row',
-        marginTop: 23,
-        alignSelf: 'stretch',
-
-    },
-    tomorrowMinMax: {
-        flexDirection: 'row',
-        alignItems: 'center'
-
-    },
-    button: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: 184,
-        height: 40,
-        borderRadius: 16,
-        backgroundColor: 'rgba(255,255,255,0.24)',
-        marginLeft: 24.8
-
-    },
-    buttonText: {
-        fontSize: 14,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)',
-        
-    },
-    mainImage: {
-        width: 160,
-        height: 160,
-        marginTop: 51.2,
-        marginBottom: 12.8
-    },
-    tomorrowImage: {
-        width: 40,
-        height: 40,
-        marginLeft: 19.2
-    },
-    tomorrowText: {
-        marginLeft: 9.6
-    },
-    littleText: {
-        fontSize: 14,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)',
-        marginRight: 9.6,
-        textTransform: 'capitalize'
-    },
-    temp: {
-        flexDirection: 'row',
-        marginTop: 19.2,
-        marginBottom: 19.2,
-        alignItems: "center",
-        marginLeft: 13
-
-    },
-    tempText: {
-        fontSize: 64,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)',
-        alignSelf: 'center',
-    },
-
-    tempCelcius: {
-        fontSize: 24,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)',
-        marginBottom: 27
-
-    },
-
-    divider: {
-        marginTop: 47.2,
-        borderTopWidth: StyleSheet.hairlineWidth,
-        alignSelf: 'stretch',
-        borderTopColor: 'rgba(255,255,255,0.24)'
-    },
-})
 
 export default Home;

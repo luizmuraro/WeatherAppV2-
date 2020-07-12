@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image } from 'react-native';
 
 import { useNavigation, useRoute } from '@react-navigation/native'
 import LinearGradient from 'react-native-linear-gradient';
+
+import styles from './styles';
 
 
 const Week = () => {
@@ -12,13 +14,13 @@ const Week = () => {
     const [forecast, setForecast] = useState([]);
     const [weekDays, setWeekDays] = useState([]);
 
-    useEffect( () => {
+    useEffect(() => {
         const { forecastday } = routes.params.forecast;
         setForecast(forecastday);
-        
+
         function getWeekDay() {
             const days = [];
-            forecastday.map( day => {
+            forecastday.map(day => {
                 var date = new Date(day.date);
                 days.push(date.getDay(day.date));
             })
@@ -32,7 +34,7 @@ const Week = () => {
         navigation.goBack();
     }
     function handleNavigateTodetail(dayForecast, weekDay) {
-        navigation.navigate('Detail', {dayForecast, weekDay});
+        navigation.navigate('Detail', { dayForecast, weekDay });
     }
 
     const dayVariation = {
@@ -79,81 +81,86 @@ const Week = () => {
                     onPress={() => handleNavigateTodetail(day, dayVariation[weekDays[index]])}
                 >
                     <View style={styles.itemContainer}>
-                        <Text style={[styles.littleText, styles.dayText]}>{dayVariation[weekDays[index]]}</Text>
+                        <Text style={[styles.littleText, styles.dayText]}>{dayVariation[weekDays[index]].substring(0, 3)}</Text>
                         <Image style={styles.itemImage} source={imageVariation[day.day.condition.text]} />
                         <Text style={styles.littleText}>{day.day.condition.text}</Text>
                     </View>
                     <View style={styles.minMax}>
                         <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                        <Text style={styles.minMaxText}>{day.day.maxtemp_c}º</Text>
+                        <Text style={styles.minMaxText}>{Math.round(day.day.maxtemp_c)}º</Text>
                         <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                        <Text style={styles.minMaxText}>{day.day.mintemp_c}º</Text>
+                        <Text style={styles.minMaxText}>{Math.round(day.day.mintemp_c)}º</Text>
                     </View>
                 </TouchableOpacity>
             ))}
+
+            {/* Static items, because the free API just return 3 forecast days */}
+            <TouchableOpacity
+                style={styles.item}
+            >
+                <View style={styles.itemContainer}>
+                    <Text style={[styles.littleText, styles.dayText]}>Thu</Text>
+                    <Image style={styles.itemImage} source={imageVariation['Thunderstorm']} />
+                    <Text style={styles.littleText}>Thunderstorm</Text>
+                </View>
+                <View style={styles.minMax}>
+                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
+                    <Text style={styles.minMaxText}>24º</Text>
+                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
+                    <Text style={styles.minMaxText}>18º</Text>
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.item}
+            >
+                <View style={styles.itemContainer}>
+                    <Text style={[styles.littleText, styles.dayText]}>Fri</Text>
+                    <Image style={styles.itemImage} source={imageVariation['Rain']} />
+                    <Text style={styles.littleText}>Rain</Text>
+                </View>
+                <View style={styles.minMax}>
+                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
+                    <Text style={styles.minMaxText}>24º</Text>
+                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
+                    <Text style={styles.minMaxText}>18º</Text>
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.item}
+            >
+                <View style={styles.itemContainer}>
+                    <Text style={[styles.littleText, styles.dayText]}>Sat</Text>
+                    <Image style={styles.itemImage} source={imageVariation['Cloudy']} />
+                    <Text style={styles.littleText}>Cloudy</Text>
+                </View>
+                <View style={styles.minMax}>
+                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
+                    <Text style={styles.minMaxText}>24º</Text>
+                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
+                    <Text style={styles.minMaxText}>18º</Text>
+                </View>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+                style={styles.item}
+            >
+                <View style={styles.itemContainer}>
+                    <Text style={[styles.littleText, styles.dayText]}>Sun</Text>
+                    <Image style={styles.itemImage} source={imageVariation['Mostly cloudy']} />
+                    <Text style={styles.littleText}>Mostly cloudy</Text>
+                </View>
+                <View style={styles.minMax}>
+                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
+                    <Text style={styles.minMaxText}>24º</Text>
+                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
+                    <Text style={styles.minMaxText}>18º</Text>
+                </View>
+            </TouchableOpacity>
+
         </LinearGradient>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    header: {
-        flexDirection: 'row',
-        height: 140,
-        paddingHorizontal: 24,
-        alignItems: "center",
-        justifyContent: "space-between",
-    },
-    headerButton: {
-        width: 18
-    },
-    headerIcon: {
-        transform: [{
-            rotate: '180deg'
-        }]
-    },
-    title: {
-        fontFamily: 'Averta-Semibold',
-        fontSize: 20,
-        color: 'rgb(255,255,255)',
-    },
-    item: {
-        paddingHorizontal: 24,
-        flexDirection: 'row',
-        alignItems: "center",
-        justifyContent: 'space-between',
-        marginBottom: 26
-    },
-    itemContainer: {
-        flexDirection: 'row',
-        alignItems: "center",
-    },
-    itemImage: {
-        marginHorizontal: 15,
-        width: 40,
-        height: 40
-    },
-    minMax: {
-        flexDirection: "row",
-        paddingRight: 24,
-    },
-    littleText: {
-        fontSize: 14,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)',
-        width: 100,
-    },
-    minMaxText: {
-        fontSize: 12,
-        fontFamily: 'Averta-Semibold',
-        color: 'rgb(255,255,255)',
-        paddingRight: 10
-    },
-    dayText: {
-        width: 40
-    }
-})
 
 export default Week;
