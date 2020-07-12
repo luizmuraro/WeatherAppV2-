@@ -16,13 +16,13 @@ const Detail = () => {
     const [humidity, setHumidity] = useState('');
     const [wind, setWind] = useState('');
     const [precipitation, setPrecipitation] = useState('');
-    
+
     const navigation = useNavigation();
     const routes = useRoute();
 
     useEffect(() => {
         setWeekDay(routes.params.weekDay)
-        const { condition ,avgtemp_c, maxtemp_c, mintemp_c, avghumidity, maxwind_kph, totalprecip_mm } = routes.params.dayForecast.day;
+        const { condition, avgtemp_c, maxtemp_c, mintemp_c, avghumidity, maxwind_kph, totalprecip_mm } = routes.params.dayForecast.day;
         setCondition(condition.text);
         setTemp(avgtemp_c);
         setMaxTemp(maxtemp_c);
@@ -32,6 +32,7 @@ const Detail = () => {
         setPrecipitation(totalprecip_mm);
     }, []);
 
+    // Navigate to the previous screen
     function handleNavigateBack() {
         navigation.goBack();
     }
@@ -67,9 +68,8 @@ const Detail = () => {
                 <Image style={styles.mainImage} source={imageVariation[condition]} />
                 <Text style={styles.littleText}>{condition}</Text>
                 <View style={styles.temp}>
-                        <Text style={styles.tempText}>{Math.round(temp)}</Text>
+                    <Text style={styles.tempText}>{Math.round(temp)}</Text>
                     <Text style={styles.tempCelcius}>°C</Text>
-
                 </View>
                 <View style={styles.minMax}>
                     <Image source={require('../../assets/icons/max/icMax12Px.png')} />
@@ -91,7 +91,7 @@ const Detail = () => {
                         <Text style={styles.weatherText}>{precipitation} mm</Text>
                     </View>
                 </View>
-                </View>
+            </View>
         </LinearGradient>
     );
 }

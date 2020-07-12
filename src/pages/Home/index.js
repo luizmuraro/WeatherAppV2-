@@ -1,4 +1,4 @@
-import React , {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, Image, TouchableOpacity } from 'react-native';
 import Header from '../../components/Header';
 
@@ -20,13 +20,14 @@ const Home = () => {
     const [tomorrowCondition, setTomorrowCondition] = useState('Clear');
     const [weekForecast, setWeekForecast] = useState('');
 
-
     const navigation = useNavigation();
 
     useEffect(() => {
+
+        // Get the device current position, and send it to the weather api
         async function getPositionAndForecast() {
-            await Geolocation.getCurrentPosition (info => {
-                const {latitude, longitude} = info.coords;
+            await Geolocation.getCurrentPosition(info => {
+                const { latitude, longitude } = info.coords;
 
                 axios.get(`http://api.weatherapi.com/v1/forecast.json?key=bcb8eece729c406b820220103200707&q=${latitude},${longitude}&days=7`).then(response => {
                     const { temp_c, condition, humidity, wind_kph, precip_mm } = response.data.current;
@@ -44,11 +45,12 @@ const Home = () => {
             })
 
         }
-        getPositionAndForecast()    
+        getPositionAndForecast()
     }, []);
 
+    // Navigate to full week screen, sending the week forecast as param
     function handleNavigateToWeek() {
-        navigation.navigate('Week',  { forecast: weekForecast} );
+        navigation.navigate('Week', { forecast: weekForecast });
     }
 
     const backgroundVariations = {
@@ -64,11 +66,11 @@ const Home = () => {
         'Light rain': ['rgb(104,180,239)', 'rgb(50,90,194)'],
         'Patchy rain possible': ['rgb(104,180,239)', 'rgb(50,90,194)'],
         'Rain': ['rgb(104,180,239)', 'rgb(50,90,194)'],
-        'Thunderstorm': ['rgb(96,134,220)','rgb(39,51,105)'],
-        'Thundery outbreaks possible': ['rgb(96,134,220)','rgb(39,51,105)'],
-        'Moderate or heavy rain with thunder': ['rgb(96,134,220)','rgb(39,51,105)'],
-        
+        'Thunderstorm': ['rgb(96,134,220)', 'rgb(39,51,105)'],
+        'Thundery outbreaks possible': ['rgb(96,134,220)', 'rgb(39,51,105)'],
+        'Moderate or heavy rain with thunder': ['rgb(96,134,220)', 'rgb(39,51,105)'],
     };
+
     const imageVariation = {
         'Sunny': require('../../assets/images/sunny/imageSunny.png'),
         'Clear': require('../../assets/images/sunny/imageSunny.png'),
@@ -89,15 +91,14 @@ const Home = () => {
 
     return (
 
-            <LinearGradient colors={backgroundVariations[currentCondition]} style={styles.container}>
+        <LinearGradient colors={backgroundVariations[currentCondition]} style={styles.container}>
             <Header />
             <View style={styles.main}>
                 <Image style={styles.mainImage} source={imageVariation[currentCondition]} />
                 <Text style={styles.littleText}>{currentCondition}</Text>
                 <View style={styles.temp}>
-                        <Text style={styles.tempText}>{Math.round(currentTemp)}</Text>
+                    <Text style={styles.tempText}>{Math.round(currentTemp)}</Text>
                     <Text style={styles.tempCelcius}>°C</Text>
-
                 </View>
                 <View style={styles.minMax}>
                     <Image source={require('../../assets/icons/max/icMax12Px.png')} />
@@ -133,8 +134,8 @@ const Home = () => {
                         </View>
                     </View>
                     <TouchableOpacity style={styles.button} onPress={handleNavigateToWeek}>
-                            <Text style={styles.buttonText}>See the full week</Text>
-                            <Image style={styles.buttonIcon} source={require('../../assets/icons/arrowRight/icArrowright24Px.png')} />
+                        <Text style={styles.buttonText}>See the full week</Text>
+                        <Image style={styles.buttonIcon} source={require('../../assets/icons/arrowRight/icArrowright24Px.png')} />
                     </TouchableOpacity>
                 </View>
             </View>

@@ -6,7 +6,6 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import styles from './styles';
 
-
 const Week = () => {
 
     const navigation = useNavigation();
@@ -17,7 +16,8 @@ const Week = () => {
     useEffect(() => {
         const { forecastday } = routes.params.forecast;
         setForecast(forecastday);
-
+        
+        // Get the day of the week, through the date
         function getWeekDay() {
             const days = [];
             forecastday.map(day => {
@@ -29,10 +29,12 @@ const Week = () => {
         getWeekDay();
     }, []);
 
-
+    // Navigate to the previous screen
     function handleNavigateBack() {
         navigation.goBack();
     }
+
+    // Navigate to detail screen, sending the forecast and the selected day of the week  
     function handleNavigateTodetail(dayForecast, weekDay) {
         navigation.navigate('Detail', { dayForecast, weekDay });
     }
@@ -62,6 +64,7 @@ const Week = () => {
         'Rain': require('../../assets/images/rain/imageRain.png'),
         'Thunderstorm': require('../../assets/images/thunder/imageThunderstorm.png'),
         'Thundery outbreaks possible': require('../../assets/images/thunder/imageThunderstorm.png'),
+        'Moderate or heavy rain with thunder': require('../../assets/images/thunder/imageThunderstorm.png'),
     };
 
     return (
@@ -94,7 +97,7 @@ const Week = () => {
                 </TouchableOpacity>
             ))}
 
-            {/* Static items, because the free API just return 3 forecast days */}
+            {/* Static items, because the free plan of the API just return 3 days of forecast */}
             <TouchableOpacity
                 style={styles.item}
             >
@@ -111,9 +114,7 @@ const Week = () => {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity
-                style={styles.item}
-            >
+            <TouchableOpacity style={styles.item}>
                 <View style={styles.itemContainer}>
                     <Text style={[styles.littleText, styles.dayText]}>Fri</Text>
                     <Image style={styles.itemImage} source={imageVariation['Rain']} />
@@ -127,9 +128,7 @@ const Week = () => {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity
-                style={styles.item}
-            >
+            <TouchableOpacity style={styles.item}>
                 <View style={styles.itemContainer}>
                     <Text style={[styles.littleText, styles.dayText]}>Sat</Text>
                     <Image style={styles.itemImage} source={imageVariation['Cloudy']} />
@@ -143,9 +142,7 @@ const Week = () => {
                 </View>
             </TouchableOpacity>
 
-            <TouchableOpacity
-                style={styles.item}
-            >
+            <TouchableOpacity style={styles.item}>
                 <View style={styles.itemContainer}>
                     <Text style={[styles.littleText, styles.dayText]}>Sun</Text>
                     <Image style={styles.itemImage} source={imageVariation['Mostly cloudy']} />
@@ -158,7 +155,6 @@ const Week = () => {
                     <Text style={styles.minMaxText}>18º</Text>
                 </View>
             </TouchableOpacity>
-
         </LinearGradient>
     );
 }

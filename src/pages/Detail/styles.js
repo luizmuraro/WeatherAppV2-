@@ -29,7 +29,7 @@ export default StyleSheet.create({
         marginTop: 51.2,
         marginBottom: 12.8
     },
-    
+
     minMax: {
         flexDirection: 'row',
         alignItems: 'center'
