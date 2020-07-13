@@ -1,162 +1,178 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import React from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 
-import { useNavigation, useRoute } from '@react-navigation/native'
-import LinearGradient from 'react-native-linear-gradient';
+import { useRoute } from "@react-navigation/native";
+import LinearGradient from "react-native-linear-gradient";
+import moment from "moment";
 
-import styles from './styles';
+import styles from "./styles";
+import { backgroundVariations, imageVariation } from "../../utils";
+import iconMax from "../../assets/icons/max/icMax12Px.png";
+import iconMin from "../../assets/icons/min/icMin12Px.png";
+import iconArrowRight from "../../assets/icons/arrowRight/icArrowright24Px.png";
 
-const Week = () => {
-
-    const navigation = useNavigation();
-    const routes = useRoute();
-    const [forecast, setForecast] = useState([]);
-    const [weekDays, setWeekDays] = useState([]);
-
-    useEffect(() => {
-        const { forecastday } = routes.params.forecast;
-        setForecast(forecastday);
-        
-        // Get the day of the week, through the date
-        function getWeekDay() {
-            const days = [];
-            forecastday.map(day => {
-                var date = new Date(day.date);
-                days.push(date.getDay(day.date));
-            })
-            setWeekDays(days);
-        }
-        getWeekDay();
-    }, []);
-
-    // Navigate to the previous screen
-    function handleNavigateBack() {
-        navigation.goBack();
+const mockData = [
+  {
+    day: {
+      date: moment().add(3, "days"),
+      condition: {
+        text: "Cloudy"
+      },
+      maxtemp_c: 24,
+      mintemp_c: 18,
+      avgtemp_c: 22,
+      avghumidity: 50,
+      maxwind_kph: 2,
+      totalprecip_mm: 20
     }
-
-    // Navigate to detail screen, sending the forecast and the selected day of the week  
-    function handleNavigateTodetail(dayForecast, weekDay) {
-        navigation.navigate('Detail', { dayForecast, weekDay });
+  },
+  {
+    day: {
+      date: moment().add(4, "days"),
+      condition: {
+        text: "Showers"
+      },
+      maxtemp_c: 24,
+      mintemp_c: 18,
+      avgtemp_c: 22,
+      avghumidity: 50,
+      maxwind_kph: 2,
+      totalprecip_mm: 20
     }
-
-    const dayVariation = {
-        0: 'Monday',
-        1: 'Tuesday',
-        2: 'Wednesday',
-        3: 'Thursday',
-        4: 'Friday',
-        5: 'Saturday',
-        6: 'Sunday'
+  },
+  {
+    day: {
+      date: moment().add(5, "days"),
+      condition: {
+        text: "Rain"
+      },
+      maxtemp_c: 24,
+      mintemp_c: 18,
+      avgtemp_c: 22,
+      avghumidity: 50,
+      maxwind_kph: 2,
+      totalprecip_mm: 20
     }
+  },
+  {
+    day: {
+      date: moment().add(6, "days"),
+      condition: {
+        text: "Thunderstorm"
+      },
+      maxtemp_c: 24,
+      mintemp_c: 18,
+      avgtemp_c: 22,
+      avghumidity: 50,
+      maxwind_kph: 2,
+      totalprecip_mm: 20
+    }
+  }
+];
 
-    const imageVariation = {
-        'Sunny': require('../../assets/images/sunny/imageSunny.png'),
-        'Clear': require('../../assets/images/sunny/imageSunny.png'),
-        'Partly cloudy': require('../../assets/images/partlycloudy/imagePartlycloudy.png'),
-        'Mostly cloudy': require('../../assets/images/mostlycloudy/imageMostlycloudy.png'),
-        'Cloudy': require('../../assets/images/cloudy/imageCloudy.png'),
-        'Mist': require('../../assets/images/cloudy/imageCloudy.png'),
-        'Overcast': require('../../assets/images/cloudy/imageCloudy.png'),
-        'Showers': require('../../assets/images/showers/imageShowers.png'),
-        'Moderate or heavy rain shower': require('../../assets/images/showers/imageShowers.png'),
-        'Light rain': require('../../assets/images/showers/imageShowers.png'),
-        'Patchy rain possible': require('../../assets/images/showers/imageShowers.png'),
-        'Rain': require('../../assets/images/rain/imageRain.png'),
-        'Thunderstorm': require('../../assets/images/thunder/imageThunderstorm.png'),
-        'Thundery outbreaks possible': require('../../assets/images/thunder/imageThunderstorm.png'),
-        'Moderate or heavy rain with thunder': require('../../assets/images/thunder/imageThunderstorm.png'),
-    };
+const Week = ({ navigation }) => {
+  const routes = useRoute();
 
-    return (
-        <LinearGradient colors={['rgb(102,197,255)', 'rgb(21,128,253)']} style={styles.container}>
-            <View style={styles.header} >
-                <TouchableOpacity onPress={handleNavigateBack} style={styles.headerButton}>
-                    <Image style={styles.headerIcon} source={require('../../assets/icons/arrowRight/icArrowright24Px.png')} />
-                </TouchableOpacity>
-                <Text style={styles.title}>This Week</Text>
-                <View style={styles.headerButton} />
-            </View>
+  const {
+    forecast: { forecastday },
+    conditionDescription
+  } = routes.params;
 
-            {forecast.map((day, index) => (
-                <TouchableOpacity
-                    key={day.date}
-                    style={styles.item}
-                    onPress={() => handleNavigateTodetail(day, dayVariation[weekDays[index]])}
-                >
-                    <View style={styles.itemContainer}>
-                        <Text style={[styles.littleText, styles.dayText]}>{dayVariation[weekDays[index]].substring(0, 3)}</Text>
-                        <Image style={styles.itemImage} source={imageVariation[day.day.condition.text]} />
-                        <Text style={styles.littleText}>{day.day.condition.text}</Text>
-                    </View>
-                    <View style={styles.minMax}>
-                        <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                        <Text style={styles.minMaxText}>{Math.round(day.day.maxtemp_c)}º</Text>
-                        <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                        <Text style={styles.minMaxText}>{Math.round(day.day.mintemp_c)}º</Text>
-                    </View>
-                </TouchableOpacity>
-            ))}
+  // Navigate to the previous screen
+  function handleNavigateBack() {
+    navigation.goBack();
+  }
 
-            {/* Static items, because the free plan of the API just return 3 days of forecast */}
-            <TouchableOpacity
-                style={styles.item}
-            >
-                <View style={styles.itemContainer}>
-                    <Text style={[styles.littleText, styles.dayText]}>Thu</Text>
-                    <Image style={styles.itemImage} source={imageVariation['Thunderstorm']} />
-                    <Text style={styles.littleText}>Thunderstorm</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
+  // Navigate to detail screen, sending the forecast and the selected day of the week
+  function handleNavigateTodetail(dayForecast, weekDay) {
+    navigation.navigate("Detail", { dayForecast, weekDay });
+  }
 
-            <TouchableOpacity style={styles.item}>
-                <View style={styles.itemContainer}>
-                    <Text style={[styles.littleText, styles.dayText]}>Fri</Text>
-                    <Image style={styles.itemImage} source={imageVariation['Rain']} />
-                    <Text style={styles.littleText}>Rain</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
+  function getWeekDay(date, size = "ddd") {
+    return moment(date).format(size);
+  }
 
-            <TouchableOpacity style={styles.item}>
-                <View style={styles.itemContainer}>
-                    <Text style={[styles.littleText, styles.dayText]}>Sat</Text>
-                    <Image style={styles.itemImage} source={imageVariation['Cloudy']} />
-                    <Text style={styles.littleText}>Cloudy</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
+  return (
+    <LinearGradient
+      colors={backgroundVariations[conditionDescription]}
+      style={styles.container}
+    >
+      <View style={styles.header}>
+        <TouchableOpacity
+          onPress={handleNavigateBack}
+          style={styles.headerButton}
+        >
+          <Image style={styles.headerIcon} source={iconArrowRight} />
+        </TouchableOpacity>
+        <Text style={styles.title}>This Week</Text>
+        <View style={styles.headerButton} />
+      </View>
 
-            <TouchableOpacity style={styles.item}>
-                <View style={styles.itemContainer}>
-                    <Text style={[styles.littleText, styles.dayText]}>Sun</Text>
-                    <Image style={styles.itemImage} source={imageVariation['Mostly cloudy']} />
-                    <Text style={styles.littleText}>Mostly cloudy</Text>
-                </View>
-                <View style={styles.minMax}>
-                    <Image source={require('../../assets/icons/max/icMax12Px.png')} />
-                    <Text style={styles.minMaxText}>24º</Text>
-                    <Image source={require('../../assets/icons/min/icMin12Px.png')} />
-                    <Text style={styles.minMaxText}>18º</Text>
-                </View>
-            </TouchableOpacity>
-        </LinearGradient>
-    );
-}
+      {forecastday.map(day => (
+        <TouchableOpacity
+          key={day.date}
+          style={styles.item}
+          onPress={() =>
+            handleNavigateTodetail(day, getWeekDay(day.date, "dddd"))
+          }
+        >
+          <View style={styles.itemContainer}>
+            <Text style={[styles.littleText, styles.dayText]}>
+              {getWeekDay(day.date)}
+            </Text>
+            <Image
+              style={styles.itemImage}
+              source={imageVariation[day.day.condition.text]}
+            />
+            <Text style={styles.littleText}>{day.day.condition.text}</Text>
+          </View>
+          <View style={styles.minMax}>
+            <Image source={iconMax} />
+            <Text style={styles.minMaxText}>
+              {Math.round(day.day.maxtemp_c)}º
+            </Text>
+            <Image source={iconMin} />
+            <Text style={styles.minMaxText}>
+              {Math.round(day.day.mintemp_c)}º
+            </Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+
+      {/* Static items, because the free plan of the API just return 3 days of forecast */}
+
+      {mockData.map(day => (
+        <TouchableOpacity
+          key={day.day.date}
+          style={styles.item}
+          onPress={() =>
+            handleNavigateTodetail(day, getWeekDay(day.date, "dddd"))
+          }
+        >
+          <View style={styles.itemContainer}>
+            <Text style={[styles.littleText, styles.dayText]}>
+              {getWeekDay(day.date)}
+            </Text>
+            <Image
+              style={styles.itemImage}
+              source={imageVariation[day.day.condition.text]}
+            />
+            <Text style={styles.littleText}>{day.day.condition.text}</Text>
+          </View>
+          <View style={styles.minMax}>
+            <Image source={iconMax} />
+            <Text style={styles.minMaxText}>
+              {Math.round(day.day.maxtemp_c)}º
+            </Text>
+            <Image source={iconMin} />
+            <Text style={styles.minMaxText}>
+              {Math.round(day.day.mintemp_c)}º
+            </Text>
+          </View>
+        </TouchableOpacity>
+      ))}
+    </LinearGradient>
+  );
+};
 
 export default Week;
